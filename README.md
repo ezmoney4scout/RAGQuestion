@@ -366,6 +366,6 @@ Streamlit 支持多种部署方式：
 
 **⭐ 如果这个项目对你有帮助，欢迎点个 Star 支持一下！⭐**
 
-Made with ❤️ by RAG Knowledge Base Team
+Made with ❤️ by Scott Lu
 
 </div>
