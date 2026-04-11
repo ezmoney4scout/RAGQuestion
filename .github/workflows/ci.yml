@@ -1,0 +1,102 @@
+name: CI
+
+# ======================================================================
+# 持续集成工作流
+# 触发时机：推送到 main/develop 分支或对 main 发起 PR
+# ======================================================================
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:  # 允许手动触发
+
+# 取消同一 PR 的重复运行，节省 CI 资源
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  # ======================================================================
+  # 1. 代码风格与静态检查
+  # ======================================================================
+  lint:
+    name: 🧹 代码检查
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: pip
+
+      - name: Install ruff
+        run: pip install ruff
+
+      - name: Ruff lint
+        run: ruff check . --output-format=github
+
+      - name: Ruff format check
+        run: ruff format --check .
+        continue-on-error: true
+
+  # ======================================================================
+  # 2. 多版本 Python + 多 OS 测试
+  # ======================================================================
+  test:
+    name: 🧪 Py${{ matrix.python-version }} / ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, macos-latest, windows-latest]
+        python-version: ["3.9", "3.10", "3.11", "3.12"]
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Syntax check
+        run: python -m compileall -q app.py config.py utils.py chains.py
+
+      - name: Import smoke test
+        env:
+          OPENAI_API_KEY: sk-fake-key-for-ci
+        run: |
+          python -c "import config; import utils; import chains; print('✅ imports OK')"
+
+  # ======================================================================
+  # 3. Docker 镜像构建测试
+  # ======================================================================
+  docker:
+    name: 🐳 Docker 构建
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: false
+          tags: rag-knowledge-base:ci
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

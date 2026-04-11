@@ -1,0 +1,136 @@
+# ======================================================================
+# RAG 知识库问答系统 —— Git 忽略规则
+# ======================================================================
+
+# ==================== 敏感信息 ====================
+# 环境变量文件（含 API Key，绝对不可提交）
+.env
+.env.local
+.env.*.local
+*.pem
+*.key
+
+
+# ==================== 项目运行时产物 ====================
+# 向量数据库持久化目录
+vector_store/
+chroma_db/
+*.sqlite3
+*.duckdb
+
+# 上传的原始文档缓存
+data/
+uploads/
+*.pdf
+!docs/**/*.pdf         # 保留 docs 目录下的示例文档
+
+# 日志文件
+*.log
+logs/
+
+
+# ==================== Python ====================
+# 字节码 / 缓存
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# 虚拟环境
+venv/
+env/
+ENV/
+.venv/
+.env/
+virtualenv/
+
+# 打包产物
+build/
+dist/
+*.egg-info/
+*.egg
+pip-log.txt
+pip-delete-this-directory.txt
+
+# 测试与覆盖率
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+.tox/
+.nox/
+coverage.xml
+*.cover
+.hypothesis/
+
+# 类型检查
+.mypy_cache/
+.dmypy.json
+.pytype/
+.pyre/
+
+# Jupyter
+.ipynb_checkpoints/
+*.ipynb_checkpoints
+
+
+# ==================== Streamlit ====================
+.streamlit/secrets.toml
+
+
+# ==================== IDE / 编辑器 ====================
+# VS Code
+.vscode/
+*.code-workspace
+
+# PyCharm / IntelliJ
+.idea/
+*.iml
+*.iws
+
+# Sublime
+*.sublime-project
+*.sublime-workspace
+
+# Vim / Emacs
+*.swp
+*.swo
+*~
+.#*
+\#*\#
+
+
+# ==================== 操作系统 ====================
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+
+
+# ==================== 其他 ====================
+# 临时文件
+tmp/
+temp/
+*.tmp
+*.bak
+*.old
+
+# 备份文件
+*.backup
+*.orig

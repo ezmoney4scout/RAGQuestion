@@ -1,0 +1,72 @@
+# ======================================================================
+# RAG 知识库问答系统 —— Docker Compose
+# 一键启动应用 + 可选的 Ollama 本地模型服务
+#
+# 使用方法：
+#   1. cp .env.example .env 并填写配置
+#   2. docker compose up -d              # 启动全部服务
+#   3. docker compose up -d app          # 仅启动应用（使用外部 Ollama/OpenAI）
+#   4. docker compose logs -f app        # 查看日志
+#   5. docker compose down               # 停止服务
+# ======================================================================
+
+version: "3.9"
+
+services:
+  # ---- RAG 应用服务 ----
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: rag-knowledge-base:latest
+    container_name: rag-kb-app
+    ports:
+      - "8501:8501"
+    volumes:
+      # 持久化上传的文档与向量库
+      - ./data:/app/data
+      - ./vector_store:/app/vector_store
+    env_file:
+      - .env
+    environment:
+      # 指向下方的 ollama 服务（若使用 Ollama 模式）
+      - OLLAMA_BASE_URL=http://ollama:11434
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8501/_stcore/health')"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 20s
+    networks:
+      - rag-network
+
+  # ---- Ollama 本地模型服务（可选）----
+  # 仅在 USE_OLLAMA=true 时需要；使用 OpenAI 模式可整段注释
+  ollama:
+    image: ollama/ollama:latest
+    container_name: rag-kb-ollama
+    ports:
+      - "11434:11434"
+    volumes:
+      - ollama_data:/root/.ollama
+    restart: unless-stopped
+    networks:
+      - rag-network
+    # ---- GPU 支持（可选）----
+    # 如需 NVIDIA GPU 加速，取消下方注释并安装 nvidia-container-toolkit
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+volumes:
+  ollama_data:
+    driver: local
+
+networks:
+  rag-network:
+    driver: bridge

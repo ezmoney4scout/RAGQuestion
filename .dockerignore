@@ -1,0 +1,70 @@
+# ======================================================================
+# Docker 构建忽略规则 —— 减小镜像体积、避免敏感文件进入镜像
+# ======================================================================
+
+# ---- Python 字节码与缓存 ----
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+
+# ---- 虚拟环境 ----
+venv/
+env/
+ENV/
+.venv/
+
+# ---- 敏感信息（绝对不进镜像）----
+.env
+.env.local
+*.pem
+*.key
+
+# ---- Git ----
+.git/
+.gitignore
+.gitattributes
+
+# ---- GitHub 配置 ----
+.github/
+
+# ---- IDE / 编辑器 ----
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# ---- 操作系统 ----
+.DS_Store
+Thumbs.db
+
+# ---- 项目运行时产物 ----
+vector_store/
+data/
+*.log
+logs/
+
+# ---- 测试与覆盖率 ----
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.mypy_cache/
+.ruff_cache/
+
+# ---- 文档（不需要进镜像）----
+docs/
+*.md
+!README.md
+
+# ---- 打包产物 ----
+build/
+dist/
+*.egg-info/
+
+# ---- Docker 相关（避免递归）----
+Dockerfile
+docker-compose.yml
+.dockerignore

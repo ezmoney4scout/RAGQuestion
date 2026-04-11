@@ -1,0 +1,63 @@
+# ======================================================================
+# Streamlit 应用配置
+# 文档：https://docs.streamlit.io/library/advanced-features/configuration
+# ======================================================================
+
+# ---------- 主题 ----------
+[theme]
+# 主题基色：light / dark
+base = "light"
+
+# 主色调（按钮、链接、高亮等）
+primaryColor = "#6C63FF"
+
+# 页面背景色
+backgroundColor = "#FFFFFF"
+
+# 次级背景色（侧边栏、卡片）
+secondaryBackgroundColor = "#F5F7FB"
+
+# 文字颜色
+textColor = "#1A1A2E"
+
+# 字体
+font = "sans serif"
+
+
+# ---------- 服务器 ----------
+[server]
+# 监听端口
+port = 8501
+
+# 监听地址（0.0.0.0 允许容器外访问）
+address = "0.0.0.0"
+
+# 无头模式（Docker / 服务器部署必须为 true）
+headless = true
+
+# 最大上传文件体积（单位：MB）
+maxUploadSize = 200
+
+# 消息体积上限（单位：MB）
+maxMessageSize = 200
+
+# XSRF 保护（生产环境建议开启）
+enableXsrfProtection = true
+
+# CORS（若前端与后端跨域请根据需要调整）
+enableCORS = false
+
+
+# ---------- 浏览器 ----------
+[browser]
+# 禁用匿名使用统计
+gatherUsageStats = false
+
+
+# ---------- 客户端 ----------
+[client]
+# 在页面上展示完整错误信息（便于调试）
+showErrorDetails = true
+
+# 工具栏显示模式：auto / developer / viewer / minimal
+toolbarMode = "auto"
