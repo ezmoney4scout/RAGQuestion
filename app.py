@@ -24,8 +24,11 @@ import config
 import utils
 import chains
 
-# 日志配置
-logging.basicConfig(level=logging.INFO)
+# 日志配置（全局仅在入口调用一次 basicConfig）
+logging.basicConfig(
+    level=logging.INFO,
+    format="[%(asctime)s] %(levelname)s - %(message)s",
+)
 logger = logging.getLogger(__name__)
 
 

@@ -22,11 +22,7 @@ from langchain_community.vectorstores import Chroma
 
 import config
 
-# 日志配置
-logging.basicConfig(
-    level=logging.INFO,
-    format="[%(asctime)s] %(levelname)s - %(message)s",
-)
+# 日志（basicConfig 仅在 app.py 入口调用，这里只获取 logger）
 logger = logging.getLogger(__name__)
 
 
@@ -184,7 +180,7 @@ def build_vector_store(
         embedding=embeddings,
         persist_directory=persist_directory,
     )
-    vector_store.persist()
+    # chromadb 0.4.x+ 设置 persist_directory 后会自动持久化，无需手动调用
     logger.info("向量库已持久化到 %s", persist_directory)
     return vector_store
 
