@@ -23,5 +23,6 @@ python-dotenv>=1.0.0,<2.0.0
 # ===== Tokenizer =====
 tiktoken>=0.5.2,<0.7.0
 
-# ===== Embedding 模型（可选，本地方案推荐）=====
-sentence-transformers>=2.5.0,<3.0.0
+# ===== Embedding 模型（可选，需要本地 Embedding 时手动安装）=====
+# 注意：此包会额外安装 ~2GB 的 PyTorch，按需取消注释
+# pip install sentence-transformers>=2.5.0,<3.0.0
