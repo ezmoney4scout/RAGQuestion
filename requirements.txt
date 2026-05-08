@@ -33,7 +33,7 @@ pdfplumber==0.10.4
 python-dotenv>=1.0.0,<2.0.0
 
 # ===== Tokenizer =====
-tiktoken>=0.12.0,<0.13.0
+tiktoken>=0.11.0,<0.12.0
 
 # ===== Embedding 模型（可选，需要本地 Embedding 时手动安装）=====
 # 注意：此包会额外安装 ~2GB 的 PyTorch，按需取消注释
